@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-import { getTeamsRequest } from "./middleware";
+import { deleteTeamRequest, getTeamsRequest } from "./middleware";
 
 type Team = {
   id: string;
@@ -15,8 +15,11 @@ type Props = {
   teams: Team[];
 };
 
-export function TeamsTable(props: Props) {
-  console.warn("props", props);
+type Actions = {
+  deleteTeam(id: string): void;
+};
+
+export function TeamsTable(props: Props & Actions) {
   return (
     <form id="editForm" action="" method="post" className={props.loading ? "loading-mask" : ""}>
       <table>
@@ -60,12 +63,15 @@ export function TeamsTable(props: Props) {
                   </a>
                 </td>
                 <td>
-                  <a data-id={"id"} className="link-btn remove-btn">
+                  <a
+                    className="link-btn"
+                    onClick={() => {
+                      props.deleteTeam(id);
+                    }}
+                  >
                     ✖
                   </a>
-                  <a data-id={"id"} className="link-btn edit-btn">
-                    &#9998;
-                  </a>
+                  <a className="link-btn edit-btn">&#9998;</a>
                 </td>
               </tr>
             );
@@ -113,9 +119,12 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
     };
   }
 
-  async componentDidMount(): Promise<void> {
+  componentDidMount(): void {
     console.info("mount");
+    this.loadTeams();
+  }
 
+  async loadTeams() {
     const teams = await getTeamsRequest();
     console.info("change loading", teams);
     this.setState({
@@ -126,6 +135,17 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
 
   render() {
     console.warn("render");
-    return <TeamsTable teams={this.state.teams} loading={this.state.loading} />;
+    return (
+      <TeamsTable
+        teams={this.state.teams}
+        loading={this.state.loading}
+        deleteTeam={async id => {
+          console.warn("todo remove", id);
+          const status = await deleteTeamRequest(id);
+          console.warn("status", status);
+          this.loadTeams();
+        }}
+      />
+    );
   }
 }
