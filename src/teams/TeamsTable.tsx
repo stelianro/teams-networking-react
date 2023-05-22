@@ -211,6 +211,19 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
     });
   }
 
+  private async deleteTeam(id: string) {
+    this.setState({
+      loading: true
+    });
+    const { success } = await deleteTeamRequest(id);
+    console.warn("deleted", success);
+
+    this.setState(state => ({
+      loading: false,
+      teams: state.teams.filter(team => team.id !== id)
+    }));
+  }
+
   render() {
     // console.warn("render");
     return (
@@ -219,16 +232,7 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
         loading={this.state.loading}
         team={this.state.team}
         deleteTeam={async id => {
-          this.setState({
-            loading: true
-          });
-          const { success } = await deleteTeamRequest(id);
-          console.warn("deleted", success);
-
-          this.setState(state => ({
-            loading: false,
-            teams: state.teams.filter(team => team.id !== id)
-          }));
+          this.deleteTeam(id);
         }}
         save={async () => {
           this.setState({
