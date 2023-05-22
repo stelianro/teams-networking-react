@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-import { deleteTeamRequest, getTeamsRequest } from "./middleware";
+import { createTeamRequest, deleteTeamRequest, getTeamsRequest } from "./middleware";
 
 type Team = {
   id: string;
@@ -114,7 +114,7 @@ export function TeamsTable(props: Props & Actions) {
                 required
                 value={props.team.members}
                 onChange={e => {
-                  console.warn("members changed", e.target.value);
+                  props.inputChange("members", e.target.value);
                 }}
               />
             </td>
@@ -127,7 +127,7 @@ export function TeamsTable(props: Props & Actions) {
                 required
                 value={props.team.name}
                 onChange={e => {
-                  console.warn("name changed", e.target.value);
+                  props.inputChange("name", e.target.value);
                 }}
               />
             </td>
@@ -140,7 +140,7 @@ export function TeamsTable(props: Props & Actions) {
                 required
                 value={props.team.url}
                 onChange={e => {
-                  console.warn("url changed", e.target.value);
+                  props.inputChange("url", e.target.value);
                 }}
               />
             </td>
@@ -171,10 +171,10 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
       teams: [],
       team: {
         id: "",
-        name: "Name",
+        name: "",
         promotion: "",
-        url: "URL",
-        members: "Eu"
+        url: "",
+        members: ""
       }
     };
   }
@@ -194,7 +194,7 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   }
 
   render() {
-    console.warn("render");
+    // console.warn("render");
     return (
       <TeamsTable
         teams={this.state.teams}
@@ -206,21 +206,26 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
           console.warn("status", status);
           this.loadTeams();
         }}
-        save={() => {
-          const team = {}; // TODO
-          console.warn("TODO pls save", team);
+        save={async () => {
+          const team = this.state.team;
+          const status = await createTeamRequest(team);
+          console.warn("create", status);
+          this.loadTeams();
         }}
         inputChange={(name: string, value: string) => {
           console.warn("%o changed to %o", name, value);
           //this.state.team.promotion = "ceva"; // not ok
           this.setState(state => {
-            //state.team.promotion = 'new'
-            console.warn("state", state);
+            // state.team.promotion === state.team["promotion"]
+            //  -> state.team[name]
+            const team = {
+              ...state.team
+              // promotion: value --- bad
+            };
+            team[name] = value;
+            console.warn("team", team);
             return {
-              team: {
-                ...state.team,
-                promotion: value
-              }
+              team
             };
           });
         }}
