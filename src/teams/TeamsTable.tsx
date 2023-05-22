@@ -18,6 +18,7 @@ type Actions = {
 };
 
 export function TeamsTable(props: Props & Actions) {
+  console.debug("props", props);
   return (
     <form
       id="editForm"
@@ -195,6 +196,11 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
       teams: [],
       team: getEmptyTeam()
     };
+
+    const originalSave = this.save;
+    this.save = async function () {
+      originalSave.call(this);
+    };
   }
 
   componentDidMount(): void {
@@ -236,6 +242,7 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   }
 
   private async save() {
+    console.warn("before save", this);
     this.setState({
       loading: true
     });
@@ -254,18 +261,14 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   }
 
   render() {
-    // console.warn("render");
+    console.info("render");
     return (
       <TeamsTable
         teams={this.state.teams}
         loading={this.state.loading}
         team={this.state.team}
-        deleteTeam={async id => {
-          this.deleteTeam(id);
-        }}
-        save={async () => {
-          await this.save();
-        }}
+        deleteTeam={this.deleteTeam}
+        save={this.save}
         startEdit={team => {
           this.setState({
             team
