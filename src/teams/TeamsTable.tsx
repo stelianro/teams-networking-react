@@ -224,6 +224,17 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
     }));
   }
 
+  private inputChange(name: string, value: string) {
+    // state.team.promotion === state.team["promotion"]
+    //  -> state.team[name]
+    this.setState(state => ({
+      team: {
+        ...state.team,
+        [name]: value
+      }
+    }));
+  }
+
   render() {
     // console.warn("render");
     return (
@@ -261,15 +272,8 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
             team: getEmptyTeam()
           });
         }}
-        inputChange={(name: string, value: string) => {
-          // state.team.promotion === state.team["promotion"]
-          //  -> state.team[name]
-          this.setState(state => ({
-            team: {
-              ...state.team,
-              [name]: value
-            }
-          }));
+        inputChange={(name, value) => {
+          this.inputChange(name, value);
         }}
       />
     );
