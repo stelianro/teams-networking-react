@@ -162,20 +162,32 @@ type State = {
   team: Team;
 };
 
+const emptyTeam: Team = {
+  id: "",
+  name: "",
+  promotion: "",
+  url: "",
+  members: ""
+};
+function getEmptyTeam(): Team {
+  // return { ...emptyTeam };
+  return {
+    id: "",
+    name: "",
+    promotion: "",
+    url: "",
+    members: ""
+  };
+}
+
 export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   constructor(props: WrapperProps) {
     super(props);
-    console.warn("constructor props", props);
+    // console.warn("constructor props", props);
     this.state = {
       loading: true,
       teams: [],
-      team: {
-        id: "",
-        name: "",
-        promotion: "",
-        url: "",
-        members: ""
-      }
+      team: getEmptyTeam()
     };
   }
 
@@ -210,7 +222,10 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
           const team = this.state.team;
           const status = await createTeamRequest(team);
           console.warn("create", status);
-          this.loadTeams();
+          await this.loadTeams();
+          this.setState({
+            team: getEmptyTeam()
+          });
         }}
         inputChange={(name: string, value: string) => {
           // state.team.promotion === state.team["promotion"]
