@@ -213,21 +213,14 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
           this.loadTeams();
         }}
         inputChange={(name: string, value: string) => {
-          console.warn("%o changed to %o", name, value);
-          //this.state.team.promotion = "ceva"; // not ok
-          this.setState(state => {
-            // state.team.promotion === state.team["promotion"]
-            //  -> state.team[name]
-            const team = {
-              ...state.team
-              // promotion: value --- bad
-            };
-            team[name] = value;
-            console.warn("team", team);
-            return {
-              team
-            };
-          });
+          // state.team.promotion === state.team["promotion"]
+          //  -> state.team[name]
+          this.setState(state => ({
+            team: {
+              ...state.team,
+              [name]: value
+            }
+          }));
         }}
       />
     );
