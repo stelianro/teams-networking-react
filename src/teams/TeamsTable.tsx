@@ -18,7 +18,6 @@ type Actions = {
 };
 
 export function TeamsTable(props: Props & Actions) {
-  console.debug("props", props);
   return (
     <form
       id="editForm"
@@ -190,7 +189,6 @@ function getEmptyTeam(): Team {
 export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   constructor(props: WrapperProps) {
     super(props);
-    // console.warn("constructor props", props);
     this.state = {
       loading: true,
       teams: [],
@@ -205,13 +203,11 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   }
 
   componentDidMount(): void {
-    console.info("mount");
     this.loadTeams();
   }
 
   async loadTeams() {
     const teams = await getTeamsRequest();
-    console.info("change loading", teams);
     this.setState({
       loading: false,
       teams: teams || []
@@ -223,7 +219,6 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
       loading: true
     });
     const { success } = await deleteTeamRequest(id);
-    console.warn("deleted", success);
 
     this.setState(state => ({
       loading: false,
@@ -243,28 +238,22 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   }
 
   private async save() {
-    console.warn("before save", this);
     this.setState({
       loading: true
     });
     const team = this.state.team;
-    let status;
+    let id, status;
     if (team.id) {
       status = await updateTeamRequest(team);
-      this.setState(state => ({
-        teams: state.teams.map(t => (t.id === team.id ? { ...team } : t))
-      }));
     } else {
-      const { id } = await createTeamRequest(team);
-      this.setState(state => ({
-        teams: [...state.teams, { ...team, id }]
-      }));
+      status = await createTeamRequest(team);
+      id = status.id;
     }
-    console.warn("save", status);
-    this.setState({
+    this.setState(state => ({
       loading: false,
+      teams: team.id ? state.teams.map(t => (t.id === team.id ? { ...team } : t)) : [...state.teams, { ...team, id }],
       team: getEmptyTeam()
-    });
+    }));
   }
 
   private startEdit(team: Team) {
@@ -280,7 +269,6 @@ export class TeamsTableWrapper extends React.Component<WrapperProps, State> {
   }
 
   render() {
-    console.info("render");
     return (
       <TeamsTable
         teams={this.state.teams}
