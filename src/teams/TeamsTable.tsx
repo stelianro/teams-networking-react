@@ -1,14 +1,7 @@
 import React from "react";
 import "./style.css";
 import { createTeamRequest, deleteTeamRequest, getTeamsRequest, updateTeamRequest } from "./middleware";
-
-type Team = {
-  id: string;
-  name: string;
-  promotion: string;
-  url: string;
-  members: string;
-};
+import { Team } from "./models";
 
 type Props = {
   loading: boolean;
