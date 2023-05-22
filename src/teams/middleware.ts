@@ -6,9 +6,13 @@ export function getTeamsRequest(): Promise<Team[]> {
     headers: {
       "Content-Type": "application/json"
     }
-  }).then(r => {
-    return r.json();
-  });
+  })
+    .then(r => {
+      return r.json();
+    })
+    .catch(err => {
+      console.warn("failed to fetch", err);
+    });
 }
 
 export function createTeamRequest(team: Team) {
