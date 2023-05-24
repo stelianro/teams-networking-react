@@ -12,6 +12,7 @@ export function MainMenu(props: Props & Actions) {
   const elements: MenuElement[] = [
     { text: "Home", name: "home" },
     { text: "Skills", name: "skills" },
+    { text: "Todos", name: "todos" },
     { text: "Teams", name: "teams" },
     { text: "Languages", name: "languages" }
   ];

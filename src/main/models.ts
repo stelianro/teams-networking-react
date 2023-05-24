@@ -1,1 +1,1 @@
-export type Page = "home" | "skills" | "teams" | "languages";
+export type Page = "home" | "skills" | "todos" | "teams" | "languages";

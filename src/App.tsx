@@ -5,7 +5,7 @@ import Header from "./header";
 import { ContentWrapper } from "./main/components";
 import { Page } from "./main/models";
 
-const validPages: Page[] = ["home", "languages", "skills", "teams"];
+const validPages: Page[] = ["home", "languages", "skills", "todos", "teams"];
 
 function App() {
   let defaultPage = window.location.hash.substring(1) as Page;
