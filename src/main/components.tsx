@@ -26,7 +26,7 @@ export function ContentWrapper() {
             }}
           />
           <span>searching: {search}</span>
-          <TeamsTableWrapper />
+          <TeamsTableWrapper search={search} />
         </div>
         <div className="page" id="languages">
           Languages content...
