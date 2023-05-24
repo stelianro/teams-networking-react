@@ -2,7 +2,9 @@ import { Page } from "../main/models";
 import { MainMenu } from "../menu/MainMenu";
 import logo from "./network-team-icon.png";
 
-type Props = {};
+type Props = {
+  activePage: Page;
+};
 type Actions = {
   setActive(page: Page): void;
 };
@@ -19,7 +21,7 @@ export default function AppHeader(props: Props & Actions) {
         </div>
       </div>
 
-      <MainMenu setActive={props.setActive} />
+      <MainMenu active={props.activePage} setActive={props.setActive} />
     </header>
   );
 }
