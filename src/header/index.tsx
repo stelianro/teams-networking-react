@@ -8,7 +8,19 @@ type Props = {
 type Actions = {
   setActive(page: Page): void;
 };
+
+const icons = {
+  home: "🏠",
+  skills: "🎳",
+  teams: "👨‍👩‍👦‍👦",
+  languages: "♑"
+};
+function getIcon(page: Page) {
+  return icons[page];
+}
+
 export default function AppHeader(props: Props & Actions) {
+  const icon = getIcon(props.activePage);
   return (
     <header>
       <div id="header-wrapper">
@@ -16,7 +28,10 @@ export default function AppHeader(props: Props & Actions) {
           <img src={logo} alt="Selfie" height="100" />
         </div>
         <div>
-          <h1>Stelian Rosca</h1>
+          <h1>
+            <span style={{ display: "inline-block", minWidth: "65px" }}>{icon}</span>
+            Stelian Rosca
+          </h1>
           <h2 id="job-title">Software Developer @ OSS</h2>
         </div>
       </div>
