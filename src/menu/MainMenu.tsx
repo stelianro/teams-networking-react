@@ -12,7 +12,7 @@ export function MainMenu(props: Props & Actions) {
     <ul id="top-menu-bar">
       <li>
         <a
-          href="#"
+          href="#home"
           className={active === "home" ? "active" : ""}
           onClick={() => {
             props.setActive("home");
@@ -23,7 +23,7 @@ export function MainMenu(props: Props & Actions) {
       </li>
       <li>
         <a
-          href="#"
+          href="#skills"
           className={active === "skills" ? "active" : ""}
           onClick={() => {
             props.setActive("skills");
@@ -34,7 +34,7 @@ export function MainMenu(props: Props & Actions) {
       </li>
       <li>
         <a
-          href="#"
+          href="#teams"
           className={active === "teams" ? "active" : ""}
           onClick={() => {
             props.setActive("teams");
@@ -45,7 +45,7 @@ export function MainMenu(props: Props & Actions) {
       </li>
       <li>
         <a
-          href="#"
+          href="#languages"
           className={active === "languages" ? "active" : ""}
           onClick={() => {
             props.setActive("languages");
