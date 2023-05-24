@@ -5,55 +5,31 @@ type Props = {
   active: Page;
 };
 type Actions = { setActive(page: Page): void };
+type MenuElement = { text: string; name: Page };
 
 export function MainMenu(props: Props & Actions) {
   const active = props.active;
+  const elements: MenuElement[] = [
+    { text: "Home", name: "home" },
+    { text: "Skills", name: "skills" },
+    { text: "Teams", name: "teams" },
+    { text: "Languages", name: "languages" }
+  ];
   return (
     <ul id="top-menu-bar">
-      <li>
-        <a
-          href="#home"
-          className={active === "home" ? "active" : ""}
-          onClick={() => {
-            props.setActive("home");
-          }}
-        >
-          Home
-        </a>
-      </li>
-      <li>
-        <a
-          href="#skills"
-          className={active === "skills" ? "active" : ""}
-          onClick={() => {
-            props.setActive("skills");
-          }}
-        >
-          Skills
-        </a>
-      </li>
-      <li>
-        <a
-          href="#teams"
-          className={active === "teams" ? "active" : ""}
-          onClick={() => {
-            props.setActive("teams");
-          }}
-        >
-          Teams
-        </a>
-      </li>
-      <li>
-        <a
-          href="#languages"
-          className={active === "languages" ? "active" : ""}
-          onClick={() => {
-            props.setActive("languages");
-          }}
-        >
-          Languages
-        </a>
-      </li>
+      {elements.map(element => (
+        <li key={element.name}>
+          <a
+            href={"#" + element.name}
+            className={active === element.name ? "active" : ""}
+            onClick={() => {
+              props.setActive(element.name);
+            }}
+          >
+            {element.text}
+          </a>
+        </li>
+      ))}
     </ul>
   );
 }
